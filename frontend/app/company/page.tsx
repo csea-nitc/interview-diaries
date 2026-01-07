@@ -34,6 +34,9 @@ const diariesData: Record<
         internship: [],
     },
 };
+const years = Object.keys(diariesData)
+    .map(Number)
+    .sort((a, b) => b - a);
 
 export default function OraclePage() {
     const [selectedYear, setSelectedYear] = useState<number>(2025);
@@ -54,7 +57,7 @@ export default function OraclePage() {
 
                     <div className="flex items-start gap-8 mb-8">
                         <div className="w-20 h-20 flex items-center justify-center">
-                            <span className="text-6xl font-bold text-red-600">O</span>
+                            <span className="text-6xl font-bold text-red-600">O</span> {/*imma keep image here..too lazy to put image here lol*/}
                         </div>
                         <div className="flex-1">
                             <h1 className="text-3xl font-bold text-gray-900 mb-3">Oracle</h1>
@@ -68,30 +71,40 @@ export default function OraclePage() {
 
                     {/* Full Time Section */}
                     <div className="mb-8 ">
-                        <button className="px-6 py-1.5 border border-blue-600 text-blue-600 rounded text-sm font-medium hover:bg-blue-100">
-                            SUMMARY
+                        <button className="
+  inline-flex items-center gap-2
+  px-5 py-1.5
+  border-2 border-blue-700
+  font-semibold
+  text-blue-700
+  rounded-4xl
+  text-sm font-medium
+  hover:bg-blue-100
+">
+                            <span className="w-2 h-2 rounded-full bg-blue-700"></span>
+                            SUMMARIES
                         </button>
-                        <h2 className="text-lg font-semibold text-[#0430CA] bg-blue-100 mb-4">Full time</h2>
-                        <div className="grid grid-cols-2 gap-6">
+                        <h2 className="text-lg font-semibold text-[#0430CA] bg-blue-100 mb-4 px-2 py-1">Full time</h2>
+                        <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-6">
                             {/* Software Dev */}
                             <div>
                                 <div className="bg-[#0430CA] text-white text-xs font-semibold px-3 py-1.5">
                                     SOFTWARE DEV
                                 </div>
                                 <div className="border-gray-300 p-3">
-                                    <div className="flex items-center mb-2">
+                                    <div className="flex items-center mb-2 border-t border-b border-gray-300 py-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">CAMPUS OFFERS</span>
                                         <span className="text-xs text-gray-600">: 1-4</span>
                                     </div>
-                                    <div className="flex items-center mb-2">
+                                    <div className="flex items-center mb-2 border-b border-gray-300 py-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">PPO</span>
                                         <span className="text-xs text-gray-600">: 1-12</span>
                                     </div>
-                                    <div className="flex items-center mb-2">
+                                    <div className="flex items-center mb-2 border-b border-gray-300 py-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">EXTERNAL OFFERS</span>
                                         <span className="text-xs text-gray-600">: 1-4</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex items-center border-b border-gray-300 py-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">CTC</span>
                                         <span className="text-xs text-gray-600">: ₹20 LAKHS</span>
                                     </div>
@@ -104,11 +117,11 @@ export default function OraclePage() {
                                     SYSTEMS ENGINEER
                                 </div>
                                 <div className=" border-gray-300 p-3">
-                                    <div className="flex items-center mb-2">
-                                        <span className="text-xs text-[#0430CA] font-semibold w-32">CAMPUS OFFERS</span>
+                                    <div className="flex items-center mb-2 border-t border-b border-gray-300 py-2">
+                                        <span className="text-xs text-[#0430CA] font-semibold w-32 ">CAMPUS OFFERS</span>
                                         <span className="text-xs text-gray-600">: 1-4</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex items-center border-b border-gray-300 py-2 mb-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">CTC</span>
                                         <span className="text-xs text-gray-600">: ₹20 LAKHS</span>
                                     </div>
@@ -119,18 +132,18 @@ export default function OraclePage() {
 
                     {/* Internship Section */}
                     <div>
-                        <h2 className="text-lg font-semibold text-[#0430CA] bg-blue-100 mb-4">Internship</h2>
-                        <div className="grid grid-cols-2 gap-6">
+                        <h2 className="text-lg font-semibold text-[#0430CA] bg-blue-100 mb-4 px-2 py-1">Internship</h2>
+                        <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-6">
                             <div>
                                 <div className="bg-[#0430CA] text-white text-xs font-semibold px-3 py-1.5">
                                     SOFTWARE DEV
                                 </div>
                                 <div className=" border-gray-300 p-3">
-                                    <div className="flex items-center mb-2">
+                                    <div className="flex items-center mb-2 border-t border-b border-gray-300 py-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">CAMPUS OFFERS</span>
                                         <span className="text-xs text-gray-600">: 1-4</span>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex items-center border-b border-gray-300 py-2">
                                         <span className="text-xs text-[#0430CA] font-semibold w-32">STIPEND</span>
                                         <span className="text-xs text-gray-600">: ₹1.5 LAKHS</span>
                                     </div>
@@ -141,35 +154,57 @@ export default function OraclePage() {
                 </div>
 
                 {/* Diaries Section */}
-                <div className="flex items-center justify-between mb-8">
-                    <button className="px-6 py-1.5 border border-blue-600 text-blue-600 rounded text-sm font-medium hover:bg-blue-100">
-                        DIARIES
-                    </button>
+                <div className="w-full md:w-auto">
+                    <div className="flex py-5">
+                        <button className="
+  inline-flex items-center gap-2
+  px-5 py-1.5
+  border-2 border-blue-700
+  font-semibold
+  text-blue-700
+  rounded-4xl
+  text-sm font-medium
+  hover:bg-blue-100
+">
+                            <span className="w-2 h-2 rounded-full bg-blue-700"></span>
+                            DIARIES
+                        </button>
+                        {/* MOBILE */}
+                        <select
+                            value={selectedYear}
+                            onChange={(e) => setSelectedYear(Number(e.target.value))}
+                            className="block md:hidden font-semibold  rounded-full px-5 py-2 text-sm mx-auto bg-blue-600 text-white"
+                        >
+                            {years.map((year) => (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
 
-                    <div className="flex items-center gap-2">
-                        {[2025, 2024, 2023, 2022].map((year) => (
-                            <button
-                                key={year}
-                                onClick={() => setSelectedYear(year as any)}
-                                className={`px-5 py-1.5 rounded-full text-sm font-medium transition
-                  ${selectedYear === year
+                        {/* DESKTOP */}
+                        <div className="hidden md:flex gap-2 mx-auto">
+                            {years.map((year) => (
+                                <button
+                                    key={year}
+                                    onClick={() => setSelectedYear(year)}
+                                    className={`px-5 py-1.5 rounded-full text-sm font-medium ${selectedYear === year
                                         ? "bg-blue-600 text-white"
-                                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                    }`}
-                            >
-                                {year}
-                            </button>
-                        ))}
+                                        : "bg-gray-200 text-gray-700"
+                                        }`}
+                                >
+                                    {year}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    <button className="px-6 py-1.5  text-blue-600 rounded text-sm font-medium hover:bg-blue-100">
-
-                    </button>
                 </div>
+
 
                 {/* FULL TIME */}
                 <div className="mb-8">
-                    <h3 className="text-base font-semibold text-[#0430CA] bg-blue-100 mb-4">
+                    <h3 className="text-base font-semibold text-[#0430CA] bg-blue-100 mb-4 px-2 py-1">
                         Full time
                     </h3>
 
@@ -202,7 +237,7 @@ export default function OraclePage() {
 
                 {/* INTERNSHIP */}
                 <div>
-                    <h3 className="text-base font-semibold text-[#0430CA] mb-4">
+                    <h3 className="text-base font-semibold text-[#0430CA] bg-blue-100 mb-4 px-2 py-1">
                         Internship
                     </h3>
 
