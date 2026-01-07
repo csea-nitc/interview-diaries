@@ -19,32 +19,24 @@ export default function ShareExperiencePage() {
 
     return (
         <main className="min-h-screen bg-[#f7f4f2] flex">
-            {/* Sidebar */}
-            <aside className="w-64 bg-[#eef1f4] border-r px-6 py-8">
-                <nav className="space-y-4 text-sm font-medium text-gray-700">
-                    <div className="text-gray-500">ABOUT</div>
-                    <div className="text-gray-500">COMPANIES</div>
-                    <div className="font-[var(--font-epilogue)] bg-blue-600 text-white px-3 py-2 rounded-md ">
-                        SHARE YOUR EXPERIENCE
-                    </div>
-                </nav>
-            </aside>
+
 
             {/* Content */}
-            <section className="flex-1 px-12 py-10">
+            <section className="flex-1 px-4 sm:px-6 md:px-12 py-10">
+
                 {/* Header */}
-                <div className="max-w-4xl ml-38 text-center">
-                    <h1 className="text-3xl font-semibold text-blue-700">
+                <div className="text-center max-w-3xl mx-auto">
+                    <h1 className="text-3xl font-semibold text-blue-700 mx-auto">
                         Share your experience
                     </h1>
-                    <p className="font-[var(--font-epilogue)] mt-2 text-sm text-gray-600">
+                    <p className="font-[var(--font-epilogue)] mt-2 text-sm text-gray-600 mx-auto">
                         Contribute to popular belief. Share your interview experience to
                         help others prepare better.
                     </p>
                 </div>
 
                 {/* Form */}
-                <form className="mt-10 max-w-6xl space-y-6">
+                <form className="mt-10 max-w-3xl space-y-6 mx-auto">
                     <Input label="Name" placeholder="Ex: John Doe" />
                     <Input label="Company" />
                     <Select
@@ -71,12 +63,12 @@ Number of Interview Rounds - 3`}
                     {sections.map((section, idx) => (
                         <div key={idx} className="pt-6 border-t">
                             <h2 className="text-lg font-semibold text-blue-700">
-                                Section {idx + 1}
+                                Round {idx + 1}
                             </h2>
 
                             <Input
-                                label="Heading"
-                                placeholder="Ex: Round 1 (Online)"
+                                label="Round Name"
+                                placeholder="Ex: Round 1 (Online Test)"
                                 value={section.heading}
                                 onChange={(e) => {
                                     const copy = [...sections];
@@ -86,7 +78,7 @@ Number of Interview Rounds - 3`}
                             />
 
                             <Textarea
-                                label="Body"
+                                label="Descriptions"
                                 placeholder={`Ex:
 1 coding question
 3 technical MCQs
@@ -104,15 +96,15 @@ Number of Interview Rounds - 3`}
                     <button
                         type="button"
                         onClick={addSection}
-                        className="text-blue-600 text-sm font-medium flex items-center gap-1"
+                        className="text-blue-600 text-sm font-medium flex border-2 rounded-full border-dashed py-1 px-2 mx-auto items-center gap-1"
                     >
-                        + Add section
+                        <span className="text-3xl">+</span> Add section
                     </button>
 
                     <div className="pt-6 text-right">
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition text-right"
+                            className="bg-blue-600 text-white px-6 py-1 text-lg rounded-full hover:bg-blue-700 transition text-right"
                         >
                             Submit
                         </button>
