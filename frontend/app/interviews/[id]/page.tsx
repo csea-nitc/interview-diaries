@@ -35,13 +35,13 @@ export default function InterviewDiaryPage({ params }: { params: Promise<{ id: s
 
     return (
         <div className="bg-[#f8fbff] flex-1 flex flex-col font-mono overflow-x-hidden">
-            <section className="flex-1 bg-white px-8 md:px-16 py-10 max-w-5xl mx-auto w-full shadow-sm min-h-screen">
-                <Link href={`/companies/${company?.slug || ''}`} className="inline-flex items-center gap-2 text-primary-blue font-bold text-xs hover:underline mb-8 uppercase">
+            <section className="flex-1 bg-white px-6 py-8 md:px-16 md:py-10 max-w-5xl mx-auto w-full shadow-sm min-h-screen">
+                <Link href={`/companies/${company?.slug || ''}`} className="inline-flex items-center gap-2 text-primary-blue font-bold text-xs hover:underline mb-6 md:mb-8 uppercase">
                     <span className="text-[10px]">◀</span> BACK TO {company?.name?.toUpperCase() || 'COMPANY'}
                 </Link>
 
                 {/* HEADER */}
-                <header className="mb-8 flex flex-col gap-3">
+                <header className="mb-6 md:mb-8 flex flex-col gap-3">
                     <span className="order-2 md:order-1 inline-flex items-center justify-center md:justify-start text-xs sm:text-sm font-semibold text-white bg-blue-800 px-3 py-[0.1rem] w-fit rounded-sm shadow-sm">
                         ▶ {diary.candidateName}
                     </span>

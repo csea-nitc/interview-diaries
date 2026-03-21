@@ -8,11 +8,14 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
     const [company, setCompany] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+    const [typeFilter, setTypeFilter] = useState<"All" | "Full Time" | "Internship">("All");
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const res = await fetch(`http://localhost:1337/api/companies?filters[slug][$eq]=${slug}&populate[diaries][populate]=*`);
+                const res = await fetch(
+                    `http://localhost:1337/api/companies?filters[slug][$eq]=${slug}&populate[diaries][populate]=*`
+                );
                 const json = await res.json();
                 if (json.data && json.data.length > 0) {
                     setCompany(json.data[0]);
@@ -37,8 +40,17 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
     }
 
     const currentYearDiaries = diaries.filter((d: any) => (d.year || new Date().getFullYear()) === selectedYear);
-    const fullTimeDiaries = currentYearDiaries.filter((d: any) => d.roleType === "Full Time");
-    const internshipDiaries = currentYearDiaries.filter((d: any) => d.roleType === "Internship");
+    const filteredDiaries = typeFilter === "All"
+        ? currentYearDiaries
+        : currentYearDiaries.filter((d: any) => d.roleType === typeFilter);
+    const fullTimeDiaries = filteredDiaries.filter((d: any) => d.roleType === "Full Time");
+    const internshipDiaries = filteredDiaries.filter((d: any) => d.roleType === "Internship");
+
+    const formatCTC = (ctc: any) => {
+        if (!ctc) return "₹0 Lakhs";
+        if (ctc > 1000) return `₹${(ctc / 100000).toFixed(1).replace('.0', '')} Lakhs`;
+        return `₹${Number(ctc).toFixed(1).replace('.0', '')} Lakhs`;
+    };
 
     const RadioTitle = ({ title }: { title: string }) => (
         <div className="flex items-center gap-2 border border-primary-blue rounded-full px-4 py-1 w-fit">
@@ -48,13 +60,13 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
     );
 
     return (
-        <div className="flex-1 w-full bg-white font-mono flex flex-col pt-10 px-8 md:px-16 lg:px-20 overflow-x-hidden">
-            <Link href="/companies" className="text-primary-blue text-sm font-bold flex items-center gap-1 mb-8 hover:underline uppercase">
+        <div className="flex-1 w-full bg-white font-mono flex flex-col pt-6 px-6 md:pt-10 md:px-16 lg:px-20 overflow-x-hidden">
+            <Link href="/companies" className="text-primary-blue text-sm font-bold flex items-center gap-1 mb-6 md:mb-8 hover:underline uppercase">
                 <span className="text-[10px]">◀</span> BACK
             </Link>
 
-            <div className="flex items-start gap-8 mb-4">
-                <div className="w-24 h-16 flex items-center justify-center border-2 border-primary-blue rounded-full shrink-0 overflow-hidden px-2">
+            <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8 mb-4">
+                <div className="w-20 h-14 md:w-24 md:h-16 flex items-center justify-center border-2 border-primary-blue rounded-full shrink-0 overflow-hidden px-2">
                     {company.logoUrl ? (
                         <img src={company.logoUrl} alt={company.name} className="max-w-full max-h-full object-contain" />
                     ) : (
@@ -62,7 +74,7 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
                     )}
                 </div>
                 <div className="flex flex-col max-w-2xl">
-                    <h1 className="text-4xl font-bold text-primary-blue mb-3 tracking-wide leading-none font-mono">{company.name}</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold text-primary-blue mb-2 md:mb-3 tracking-wide leading-none font-mono">{company.name}</h1>
                     <p className="text-base text-secondary-blue font-medium leading-relaxed mt-2 font-sans w-fit">
                         {company.description || "Dignissim facilisis penatibus tristique a ullamcorper fringilla pellentesque ipsum aliquam. Nec nunc pharetra velit ipsum scelerisque"}
                     </p>
@@ -71,7 +83,7 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
 
             <hr className="border-t border-blue-100/60 my-8" />
 
-            <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-12">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-16 mb-8 md:mb-12">
                 <div className="md:w-48 shrink-0">
                     <RadioTitle title="SUMMARY" />
                 </div>
@@ -86,12 +98,12 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
                             <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">CAMPUS OFFERS</span> <span className="text-secondary-blue">: {company.fullTime || 0}</span></div>
                             <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">PPO</span> <span className="text-secondary-blue">: {company.ppo || 0}</span></div>
                             <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">EXTERNAL OFFERS</span> <span className="text-secondary-blue">: 0</span></div>
-                            <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">CTC</span> <span className="text-secondary-blue">: ₹{(company.highestCtc / 100000).toFixed(0)} LAKHS</span></div>
+                            <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">CTC</span> <span className="text-secondary-blue">: {formatCTC(company.highestCtc)}</span></div>
                         </div>
                         <div className="flex flex-col w-full md:w-[300px]">
                             <div className="bg-primary-blue text-white px-2 py-0.5 inline-block w-fit mb-3"><span className="text-[8px] mr-1">▶</span> SYSTEMS ENGINEER</div>
                             <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">CAMPUS OFFERS</span> <span className="text-secondary-blue">: 0</span></div>
-                            <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">CTC</span> <span className="text-secondary-blue">: ₹0 LAKHS</span></div>
+                            <div className="flex justify-between py-2 border-b border-blue-100/60"><span className="w-40 text-primary-blue">CTC</span> <span className="text-secondary-blue">: ₹0 Lakhs</span></div>
                         </div>
                     </div>
 
@@ -111,24 +123,41 @@ export default function CompanyPage({ params }: { params: Promise<{ slug: string
 
             <hr className="border-t border-blue-100/60 mb-8" />
 
-            <div className="flex flex-col md:flex-row gap-8 lg:gap-16 pb-24">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-16 pb-24">
                 <div className="md:w-48 shrink-0">
                     <RadioTitle title="DIARIES" />
                 </div>
                 <div className="flex-1 flex flex-col w-full max-w-[800px]">
                     <div className="flex flex-col md:flex-row justify-between mb-8 items-start md:items-center gap-4">
-                        <div className="flex gap-2">
+                        {/* Year pills */}
+                        <div className="flex gap-2 flex-wrap">
                             {years.map(y => (
-                                <button key={y} onClick={() => setSelectedYear(y)} className={`border px-4 py-1 rounded-full text-sm font-bold uppercase transition flex items-center gap-1
-                                    ${selectedYear === y ? "border-primary-blue text-primary-blue" : "border-primary-blue text-primary-blue"}`}>
-                                    <div className={`w-2 h-2 rounded-full ${selectedYear === y ? "bg-primary-blue" : "bg-transparent border border-primary-blue"} shrink-0`} />
+                                <button
+                                    key={y}
+                                    onClick={() => setSelectedYear(y)}
+                                    className={`border px-4 py-1 rounded-full text-sm font-bold uppercase transition flex items-center gap-1 border-primary-blue text-primary-blue`}
+                                >
+                                    <div className={`w-2 h-2 rounded-full shrink-0 ${selectedYear === y ? "bg-primary-blue" : "bg-transparent border border-primary-blue"}`} />
                                     {y}
                                 </button>
                             ))}
                         </div>
-                        <button className="flex items-center gap-2 border border-primary-blue text-primary-blue text-sm px-4 py-1 uppercase hover:bg-blue-50">
-                            <span className="text-[10px]">▼</span> Roles
-                        </button>
+                        {/* Type filter */}
+                        <div className="flex gap-2">
+                            {(["All", "Full Time", "Internship"] as const).map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => setTypeFilter(t)}
+                                    className={`text-xs font-bold uppercase px-3 py-1 border transition ${
+                                        typeFilter === t
+                                            ? "bg-primary-blue text-white border-primary-blue"
+                                            : "border-primary-blue text-primary-blue hover:bg-blue-50"
+                                    }`}
+                                >
+                                    {t}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="bg-[#f2f8fc] px-4 py-2 font-bold text-primary-blue text-lg w-full mb-4 relative left-[-8px]">

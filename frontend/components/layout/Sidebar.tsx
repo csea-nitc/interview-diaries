@@ -12,7 +12,7 @@ export function Sidebar({ companies = [] }: { companies?: any[] }) {
     const activeCompanySlug = pathname.match(/\/companies\/([^/]+)/)?.[1];
 
     return (
-        <aside className="w-72 bg-[#f8fbff] min-h-dvh flex flex-col border-r border-blue-100 shrink-0 font-mono text-base shadow-sm overflow-y-auto">
+        <aside className="w-72 bg-[#f8fbff] min-h-dvh flex-col border-r border-blue-100 shrink-0 font-mono text-base shadow-sm overflow-y-auto hidden md:flex">
             <div className="flex flex-col mt-4">
 
                 <Link
