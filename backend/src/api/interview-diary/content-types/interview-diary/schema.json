@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "interview_diaries",
+  "info": {
+    "singularName": "interview-diary",
+    "pluralName": "interview-diaries",
+    "displayName": "Interview Diary",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "candidateName": {
+      "type": "string",
+      "required": true
+    },
+    "roleType": {
+      "type": "enumeration",
+      "enum": [
+        "Full Time",
+        "Internship"
+      ],
+      "required": true
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "stipend": {
+      "type": "string"
+    },
+    "totalRounds": {
+      "type": "integer"
+    },
+    "writtenTests": {
+      "type": "integer"
+    },
+    "interviews": {
+      "type": "integer"
+    },
+    "tips": {
+      "type": "text"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "diaries"
+    },
+    "rounds": {
+      "type": "component",
+      "repeatable": true,
+      "component": "interview.round"
+    }
+  }
+}

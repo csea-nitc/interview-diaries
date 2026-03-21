@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_interview_rounds",
+  "info": {
+    "displayName": "Round",
+    "icon": "layer"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "descriptions": {
+      "type": "text"
+    }
+  }
+}
