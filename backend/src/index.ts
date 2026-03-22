@@ -23,7 +23,8 @@ export default {
           'api::company.company.findOne',
           'api::interview-diary.interview-diary.find',
           'api::interview-diary.interview-diary.findOne',
-          'api::interview-diary.interview-diary.create'
+          // Submissions: public can create (submit), not read
+          'api::submission.submission.create',
         ];
         for (const action of permissions) {
           const exists = await strapi.db.query('plugin::users-permissions.permission').findOne({ where: { role: publicRole.id, action } });
@@ -39,10 +40,6 @@ export default {
 
     // 2. Seed Dummy Data
     try {
-      console.log('Cleaning old data to re-seed...');
-      await strapi.db.query('api::interview-diary.interview-diary').deleteMany({});
-      await strapi.db.query('api::company.company').deleteMany({});
-      
       const companies = await strapi.db.query('api::company.company').findMany();
       if (companies.length === 0) {
         console.log('Seeding dummy data using Documents Service...');

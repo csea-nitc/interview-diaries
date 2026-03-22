@@ -5,7 +5,7 @@
     "singularName": "interview-diary",
     "pluralName": "interview-diaries",
     "displayName": "Interview Diary",
-    "description": ""
+    "description": "Approved, published interview experiences"
   },
   "options": {
     "draftAndPublish": false
@@ -18,10 +18,7 @@
     },
     "roleType": {
       "type": "enumeration",
-      "enum": [
-        "Full Time",
-        "Internship"
-      ],
+      "enum": ["Full Time", "Internship"],
       "required": true
     },
     "jobTitle": {
@@ -51,10 +48,22 @@
       "target": "api::company.company",
       "inversedBy": "diaries"
     },
+    "ctc": {
+      "type": "integer"
+    },
+    "isPPO": {
+      "type": "boolean",
+      "default": false
+    },
     "rounds": {
       "type": "component",
       "repeatable": true,
       "component": "interview.round"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

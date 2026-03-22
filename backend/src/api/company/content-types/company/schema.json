@@ -24,18 +24,6 @@
     "logoUrl": {
       "type": "string"
     },
-    "highestCtc": {
-      "type": "integer"
-    },
-    "fullTime": {
-      "type": "integer"
-    },
-    "ppo": {
-      "type": "integer"
-    },
-    "interns": {
-      "type": "integer"
-    },
     "diaries": {
       "type": "relation",
       "relation": "oneToMany",

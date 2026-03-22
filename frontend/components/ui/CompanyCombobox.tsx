@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { strapiRequest } from "@/lib/strapiRequest";
 
 type Company = { documentId: string; name: string };
 
@@ -22,7 +23,7 @@ export function CompanyCombobox({ value, onChange, error }: Props) {
 
     // Fetch companies once
     useEffect(() => {
-        fetch("http://localhost:1337/api/companies?pagination[pageSize]=200&sort=name:asc")
+        strapiRequest("/api/companies?pagination[pageSize]=200&sort=name:asc")
             .then((r) => r.json())
             .then((j) => setCompanies(j.data ?? []))
             .catch(() => {});

@@ -449,9 +449,6 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::interview-diary.interview-diary'
     >;
-    fullTime: Schema.Attribute.Integer;
-    highestCtc: Schema.Attribute.Integer;
-    interns: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -460,7 +457,6 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     logoUrl: Schema.Attribute.String;
     name: Schema.Attribute.String & Schema.Attribute.Required;
-    ppo: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -473,7 +469,7 @@ export interface ApiInterviewDiaryInterviewDiary
   extends Struct.CollectionTypeSchema {
   collectionName: 'interview_diaries';
   info: {
-    description: '';
+    description: 'Approved, published interview experiences';
     displayName: 'Interview Diary';
     pluralName: 'interview-diaries';
     singularName: 'interview-diary';
@@ -487,7 +483,9 @@ export interface ApiInterviewDiaryInterviewDiary
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    ctc: Schema.Attribute.Integer;
     interviews: Schema.Attribute.Integer;
+    isPPO: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     jobTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -505,6 +503,63 @@ export interface ApiInterviewDiaryInterviewDiary
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    writtenTests: Schema.Attribute.Integer;
+    year: Schema.Attribute.Integer;
+  };
+}
+
+export interface ApiSubmissionSubmission extends Struct.CollectionTypeSchema {
+  collectionName: 'submissions';
+  info: {
+    description: 'Staging area for interview experience submissions pending admin approval';
+    displayName: 'Submission';
+    pluralName: 'submissions';
+    singularName: 'submission';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    approvalStatus: Schema.Attribute.Enumeration<
+      ['pending', 'approved', 'rejected']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'pending'>;
+    candidateName: Schema.Attribute.String & Schema.Attribute.Required;
+    company: Schema.Attribute.Relation<'manyToOne', 'api::company.company'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ctc: Schema.Attribute.Integer;
+    interviews: Schema.Attribute.Integer;
+    isPPO: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    isProcessed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    jobTitle: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::submission.submission'
+    > &
+      Schema.Attribute.Private;
+    newCompanyName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    roleType: Schema.Attribute.Enumeration<['Full Time', 'Internship']> &
+      Schema.Attribute.Required;
+    rounds: Schema.Attribute.Component<'interview.round', true>;
+    stipend: Schema.Attribute.String;
+    tips: Schema.Attribute.Text;
+    totalRounds: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     writtenTests: Schema.Attribute.Integer;
     year: Schema.Attribute.Integer;
   };
@@ -1023,6 +1078,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::company.company': ApiCompanyCompany;
       'api::interview-diary.interview-diary': ApiInterviewDiaryInterviewDiary;
+      'api::submission.submission': ApiSubmissionSubmission;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

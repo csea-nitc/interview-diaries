@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "submissions",
+  "info": {
+    "singularName": "submission",
+    "pluralName": "submissions",
+    "displayName": "Submission",
+    "description": "Staging area for interview experience submissions pending admin approval"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "candidateName": {
+      "type": "string",
+      "required": true
+    },
+
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "comment": "Set if the user chose an existing company"
+    },
+    "newCompanyName": {
+      "type": "string",
+      "comment": "Set if the user typed a brand-new company name"
+    },
+    "roleType": {
+      "type": "enumeration",
+      "enum": ["Full Time", "Internship"],
+      "required": true
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "stipend": {
+      "type": "string"
+    },
+    "ctc": {
+      "type": "integer",
+      "comment": "CTC in rupees — used to auto-update company highestCtc on approval"
+    },
+    "totalRounds": {
+      "type": "integer"
+    },
+    "writtenTests": {
+      "type": "integer"
+    },
+    "interviews": {
+      "type": "integer"
+    },
+    "tips": {
+      "type": "text"
+    },
+    "rounds": {
+      "type": "component",
+      "repeatable": true,
+      "component": "interview.round"
+    },
+    "isPPO": {
+      "type": "boolean",
+      "default": false
+    },
+    "approvalStatus": {
+      "type": "enumeration",
+      "enum": ["pending", "approved", "rejected"],
+      "default": "pending",
+      "required": true
+    },
+    "isProcessed": {
+      "type": "boolean",
+      "default": false
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

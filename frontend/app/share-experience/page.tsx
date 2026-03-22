@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
 import { CompanyCombobox, type CompanySelection } from "@/components/ui/CompanyCombobox";
+import { useAuth } from "@/lib/useAuth";
+import { strapiRequest } from "@/lib/strapiRequest";
 
 // ── Validation schema ────────────────────────────────────────────────────────
 
@@ -18,7 +20,6 @@ const roundSchema = z.object({
 
 const formSchema = z.object({
     candidateName: z.string().min(2, "Name must be at least 2 characters"),
-    submitterEmail: z.string().email("Enter a valid email address"),
     roleType: z.enum(["Full Time", "Internship"] as const, {
         message: "Select Full Time or Internship",
     }),
@@ -43,6 +44,7 @@ type Section = { heading: string; body: string };
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function ShareExperiencePage() {
+    useAuth();
     const [sections, setSections] = useState<Section[]>([
         { heading: "", body: "" },
         { heading: "", body: "" },
@@ -55,7 +57,6 @@ export default function ShareExperiencePage() {
 
     const [form, setForm] = useState({
         candidateName: "",
-        submitterEmail: "",
         roleType: "Full Time" as "Full Time" | "Internship",
         jobTitle: "",
         year: "",
@@ -90,7 +91,6 @@ export default function ShareExperiencePage() {
 
         const parsed = formSchema.safeParse({
             candidateName: form.candidateName,
-            submitterEmail: form.submitterEmail,
             roleType: form.roleType,
             jobTitle: form.jobTitle,
             year: form.year ? parseInt(form.year, 10) : undefined,
@@ -118,7 +118,6 @@ export default function ShareExperiencePage() {
         try {
             const body: Record<string, unknown> = {
                 candidateName: parsed.data!.candidateName,
-                submitterEmail: parsed.data!.submitterEmail,
                 roleType: parsed.data!.roleType,
                 jobTitle: parsed.data!.jobTitle,
                 year: parsed.data!.year,
@@ -139,9 +138,8 @@ export default function ShareExperiencePage() {
                 body.newCompanyName = company!.name;
             }
 
-            const res = await fetch("http://localhost:1337/api/submissions", {
+            const res = await strapiRequest("/api/submissions", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ data: body }),
             });
 
@@ -178,7 +176,7 @@ export default function ShareExperiencePage() {
                             setSubmitted(false);
                             setCompany(null);
                             setForm({
-                                candidateName: "", submitterEmail: "", roleType: "Full Time",
+                                candidateName: "", roleType: "Full Time",
                                 jobTitle: "", year: "", stipend: "", ctc: "", isPPO: false, totalRounds: "", roundsOverview: "",
                             });
                             setSections([{ heading: "", body: "" }, { heading: "", body: "" }]);
@@ -211,24 +209,16 @@ export default function ShareExperiencePage() {
 
                     {/* Personal info */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10">
-                        <FieldWrap error={errors["candidateName"]}>
-                            <Input
-                                label="Name"
-                                placeholder="Ex: John Doe"
-                                value={form.candidateName}
-                                onChange={(e) => set("candidateName", e.target.value)}
-                            />
-                        </FieldWrap>
-
-                        <FieldWrap error={errors["submitterEmail"]}>
-                            <Input
-                                label="Email (private)"
-                                type="email"
-                                placeholder="Ex: john@example.com"
-                                value={form.submitterEmail}
-                                onChange={(e) => set("submitterEmail", e.target.value)}
-                            />
-                        </FieldWrap>
+                        <div className="sm:col-span-2">
+                            <FieldWrap error={errors["candidateName"]}>
+                                <Input
+                                    label="Name"
+                                    placeholder="Ex: John Doe"
+                                    value={form.candidateName}
+                                    onChange={(e) => set("candidateName", e.target.value)}
+                                />
+                            </FieldWrap>
+                        </div>
 
                         {/* Searchable company combobox — spans full row */}
                         <div className="sm:col-span-2">

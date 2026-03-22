@@ -1,14 +1,33 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn, LogOut } from "lucide-react";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
 
 export function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [userEmail, setUserEmail] = useState<string | null>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem("strapi_jwt");
+        if (!token) return;
+        fetch("http://localhost:1337/api/users/me", {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((r) => r.ok ? r.json() : null)
+            .then((data) => { if (data?.email) setUserEmail(data.email); })
+            .catch(() => { });
+    }, []);
+
+    const handleSignOut = () => {
+        localStorage.removeItem("strapi_jwt");
+        setUserEmail(null);
+        window.dispatchEvent(new Event("auth:logout"));
+        router.push("/");
+    };
 
     // 🔥 OPEN animation
     useEffect(() => {
@@ -68,26 +87,32 @@ export function Navbar() {
             {/* NAVBAR */}
             <nav className="h-[72px] w-full border-b border-blue-100 flex items-center justify-between px-6 bg-white shrink-0 relative z-40">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0 border border-blue-500 overflow-hidden text-blue-600 text-[10px] font-bold text-center leading-none">
-                        CSEA<br />LOGO
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-primary-blue hidden md:block font-bold text-[11px] sm:text-xs tracking-wide leading-tight font-mono">
-                            COMPUTER SCIENCE &<br />
-                            ENGINEERING ASSOC.<br />
-                            NIT CALICUT
-                        </span>
-                    </div>
+                    <img src="/logo-nav.svg" alt="CSEA Logo" className="h-10 w-auto" />
                 </div>
 
                 <div className="hidden md:block text-2xl tracking-wide font-mono">
-                    <span className="font-bold text-primary-blue">INTERVIEW</span>
+                    <span className="font-semibold text-primary-blue">INTERVIEW</span>
                     <span className="text-secondary-blue ml-2">DIARIES</span>
+                </div>
+
+                {/* DESKTOP: Auth button */}
+                <div className="hidden md:flex items-center">
+                    {userEmail ? (
+                        <div className="flex items-center gap-3">
+                            <button onClick={handleSignOut} className="flex items-center gap-1.5 text-sm font-bold font-mono text-primary-blue border border-primary-blue px-3 py-1.5 hover:bg-blue-50 transition uppercase">
+                                <LogOut className="w-3.5 h-3.5" /> Sign Out
+                            </button>
+                        </div>
+                    ) : (
+                        <a href="/login" className="flex items-center gap-1.5 text-sm font-bold font-mono text-white bg-primary-blue px-4 py-1.5 hover:bg-blue-800 transition uppercase">
+                            <LogIn className="w-3.5 h-3.5" /> Sign In
+                        </a>
+                    )}
                 </div>
 
                 {/* MOBILE */}
                 <div className="flex md:hidden items-center gap-2 sm:gap-4">
-                    <div className="text-sm tracking-wide font-mono leading-none flex items-center">
+                    <div className="text-sm tracking-wide font-mono leading-none flex flex-col sm:flex-row text-right sm:items-center">
                         <span className="font-bold text-primary-blue">INTERVIEW</span>
                         <span className="text-secondary-blue ml-1">DIARIES</span>
                     </div>
@@ -106,16 +131,7 @@ export function Navbar() {
                     {/* HEADER */}
                     <div className="h-[72px] w-full flex items-center justify-between px-6 shrink-0 border-b border-blue-100">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0 border border-blue-500 overflow-hidden text-blue-600 text-[10px] font-bold text-center leading-none">
-                                CSEA<br />LOGO
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-primary-blue font-bold text-[11px] sm:text-xs tracking-wide leading-tight font-mono">
-                                    COMPUTER SCI. &<br />
-                                    ENGINEERING ASSOC.<br />
-                                    NIT CALICUT
-                                </span>
-                            </div>
+                            <img src="/logo-nav.svg" alt="CSEA Logo" className="h-10 w-auto" />
                         </div>
 
                         <button onClick={() => closeMenu()}>
@@ -142,6 +158,22 @@ export function Navbar() {
                             onClick={() => handleNavigate("/share-experience")}
                         >
                             SHARE YOUR EXPERIENCE
+                        </div>
+
+                        {/* Auth in mobile menu */}
+                        <div className="px-8 py-5 border-t border-blue-100 mt-2">
+                            {userEmail ? (
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-xs text-secondary-blue font-mono">{userEmail}</span>
+                                    <button onClick={handleSignOut} className="flex items-center gap-2 text-sm font-bold text-red-500 uppercase">
+                                        <LogOut className="w-4 h-4" /> Sign Out
+                                    </button>
+                                </div>
+                            ) : (
+                                <a href="http://localhost:1337/api/connect/google" className="flex items-center gap-2 text-sm font-bold text-primary-blue uppercase">
+                                    <LogIn className="w-4 h-4" /> Sign In with NITC Google
+                                </a>
+                            )}
                         </div>
 
                     </div>

@@ -5,7 +5,7 @@ export default function HomePage() {
     return (
         <div className="w-full flex-1 flex flex-col items-center pt-16 px-8 md:px-16 lg:px-24">
             <div className="max-w-5xl w-full flex flex-col mb-8">
-                <h1 className="text-4xl font-bold font-mono text-primary-blue mb-8 tracking-wide">
+                <h1 className="text-4xl font-semibold font-display text-primary-blue mb-8 tracking-wide">
                     Interview Diaries
                 </h1>
 

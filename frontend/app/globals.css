@@ -4,6 +4,11 @@
   --color-primary-blue: #0430ca;
   --color-secondary-blue: #5872cf;
   --color-light-blue: #eef9ff;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+
+  --font-sans: var(--font-inter);
+
+  --font-mono: var(--font-ibm-plex-mono);
+
+  --font-display: var(--font-epilogue);
 }
