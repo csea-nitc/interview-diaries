@@ -18,7 +18,8 @@ function CallbackInner() {
     }
 
     // Trade the Google token for the Strapi JWT
-    fetch(`http://localhost:1337/api/auth/google/callback?access_token=${googleAccessToken}`)
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+    fetch(`${apiUrl}/api/auth/google/callback?access_token=${googleAccessToken}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to trade token with Strapi");
         return res.json();

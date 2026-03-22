@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function HomePage() {
     return (
-        <div className="w-full flex-1 flex flex-col items-center pt-16 px-8 md:px-16 lg:px-24">
+        <div className="w-full flex-1 flex flex-col items-center justify-center px-8 md:px-16 lg:px-24">
             <div className="max-w-5xl w-full flex flex-col mb-8">
-                <h1 className="text-4xl font-semibold font-display text-primary-blue mb-8 tracking-wide">
+                <h1 className="text-4xl font-semibold font-display text-primary-blue mb-8 text-center md:text-left tracking-wide">
                     Interview Diaries
                 </h1>
 
@@ -34,7 +34,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <div className="max-w-5xl w-full   flex flex-col mt-5 mb-16 font-sans">
+            <div className="max-w-5xl w-full text-center md:text-left  flex flex-col mt-5 mb-16 font-sans">
                 <p className="text-secondary-blue font-bold text-base leading-relaxed max-w-4xl mb-4">
                     The content in the website is subject to copyright and should not be
                     reproduced in any format without the consent of the authors.

@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <div className="flex flex-1 w-full">
           <Sidebar />
-          <main className="flex-1 bg-white min-h-screen flex flex-col">
+          <main className="flex-1 bg-white min-h-[90vh] flex flex-col">
             {children}
           </main>
         </div>

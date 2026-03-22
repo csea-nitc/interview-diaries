@@ -20,7 +20,8 @@ export function useAuth() {
     }
 
     // Validate the token is still alive
-    fetch("http://localhost:1337/api/users/me", {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+    fetch(`${apiUrl}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -36,7 +37,8 @@ export function useAuth() {
       })
       .catch(() => {
         localStorage.removeItem("strapi_jwt");
-        router.replace("http://localhost:1337/api/connect/google");
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+        router.replace(`${apiUrl}/api/connect/google`);
       })
       .finally(() => setLoading(false));
   }, [router]);

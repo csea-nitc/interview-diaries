@@ -7,7 +7,7 @@ export default function UnauthorizedPage() {
         Please sign in with your NIT Calicut Google account.
       </p>
       <a
-        href="http://localhost:1337/api/connect/google"
+        href={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"}/api/connect/google`}
         className="bg-primary-blue text-white px-8 py-2.5 text-sm font-bold tracking-widest uppercase hover:bg-blue-800 transition-colors"
       >
         Sign In with NITC Google

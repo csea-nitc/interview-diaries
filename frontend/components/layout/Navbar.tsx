@@ -14,7 +14,8 @@ export function Navbar() {
     useEffect(() => {
         const token = localStorage.getItem("strapi_jwt");
         if (!token) return;
-        fetch("http://localhost:1337/api/users/me", {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+        fetch(`${apiUrl}/api/users/me`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((r) => r.ok ? r.json() : null)
@@ -170,7 +171,7 @@ export function Navbar() {
                                     </button>
                                 </div>
                             ) : (
-                                <a href="http://localhost:1337/api/connect/google" className="flex items-center gap-2 text-sm font-bold text-primary-blue uppercase">
+                                <a href={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"}/api/connect/google`} className="flex items-center gap-2 text-sm font-bold text-primary-blue uppercase">
                                     <LogIn className="w-4 h-4" /> Sign In with NITC Google
                                 </a>
                             )}

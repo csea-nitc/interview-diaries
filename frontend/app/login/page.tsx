@@ -17,7 +17,7 @@ export default function LoginPage() {
                 </p>
 
                 <a 
-                    href="http://localhost:1337/api/connect/google" 
+                    href={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337"}/api/connect/google`}
                     className="flex flex-row items-center justify-center gap-3 text-sm font-bold font-mono text-white bg-primary-blue px-8 py-4 hover:bg-blue-800 transition uppercase w-full shadow-sm hover:shadow-md"
                 >
                     <LogIn className="w-5 h-5" /> 
