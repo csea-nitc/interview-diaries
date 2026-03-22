@@ -102,31 +102,49 @@ export default function CompaniesPage() {
                 ) : (
                     <>
                         {/* Mobile Cards (Hidden on Desktop) */}
-                        <div className="flex flex-col md:hidden p-4 gap-4 pb-12 w-full ">
+                        <div className="flex flex-col md:hidden p-4 gap-4 px-6  pb-12 w-full ">
                             {filteredAndSortedCompanies.map((company, index) => (
-                                <div key={company.id} className="border border-blue-200 p-4 bg-white flex flex-col relative w-full pointer-events-auto hover:bg-[#f8fbff] transition-colors ">
+                                <div key={company.id} className=" p-4 border border-gray-200 rounded-xl flex flex-col relative w-full pointer-events-auto hover:bg-[#f8fbff] transition-colors ">
                                     <Link href={`/companies/${company.slug}`} className="absolute inset-0 z-0 bg-transparent"></Link>
-                                    <div className="flex items-center gap-4 mb-4 z-10 pointer-events-none">
-                                        <div className="w-14 h-14 border border-blue-200 rounded-sm bg-white flex items-center justify-center shrink-0 p-1">
+                                    <div className="flex items-center justify-between gap-4 mb-4 z-10 pointer-events-none">
+                              
+                                        <h2 className="text-primary-blue text-lg font-semibold font-display  tracking-wide">{company.name}</h2>
+                                                  <div className="w-14 h-14 bg-white flex items-center justify-center shrink-0 p-1">
                                             {company.logoUrl ? (
                                                 <img src={company.logoUrl} alt={company.name} className="max-w-full max-h-full object-contain" />
                                             ) : (
                                                 <span className="text-gray-300 text-lg leading-none">{company.name.charAt(0)}</span>
                                             )}
                                         </div>
-                                        <h2 className="text-primary-blue text-lg tracking-wide">{company.name}</h2>
                                     </div>
-                                    <div className="flex flex-col gap-2 z-10 pointer-events-none text-primary-blue">
-                                        <div className="text-sm uppercase flex gap-2 items-center">
-                                            <span className="font-normal opacity-70">HIGHEST CTC:</span>
-                                            <span className=" text-sm">{formatCTC(company.highestCtc)}</span>
-                                        </div>
-                                        <div className="flex flex-wrap items-center gap-4 text-xs uppercase opacity-90 mt-1">
-                                            <div><span className="font-normal opacity-70">FULL TIME:</span> <span className="">{company.fullTime || 0}</span></div>
-                                            <div><span className="font-normal opacity-70">PPO:</span> <span className="">{company.ppo || 0}</span></div>
-                                            <div><span className="font-normal opacity-70">INTERNS:</span> <span className="">{company.interns || 0}</span></div>
-                                        </div>
-                                    </div>
+                                               <div className="flex flex-col gap-2 text-xs font-mono uppercase text-primary-blue">
+
+                <div className="flex justify-between border-b border-blue-200 pb-1">
+                    <span>Highest CTC</span>
+                    <span className="font-medium">
+                        {formatCTC(company.highestCtc)}
+                    </span>
+                </div>
+
+                <div className="flex justify-between border-b border-blue-200 pb-1">
+                    <span>Full Time</span>
+                    <span>{company.fullTime || 0}</span>
+                </div>
+
+                <div className="flex justify-between border-b border-blue-200 pb-1">
+                    <span>Interns</span>
+                    <span>{company.interns || 0}</span>
+                </div>
+
+            </div>
+
+
+            {/* CTA */}
+            <div className="flex justify-end pt-2 font-semibold  border-pr  rimborder-blue-200">
+                <span className="text-xs font-mono bg-primary-blue mt-4 text-white uppercase tracking-wide px-2 py-1 pl-3">
+                    Read
+                </span>
+            </div>
                                 </div>
                             ))}
                             {filteredAndSortedCompanies.length === 0 && !loading && (

@@ -29,7 +29,7 @@ export function Footer() {
             {/* 2. Right (Quick Links) -> Needs to be order 2 on mobile */}
             <div className="flex flex-col order-2 md:order-3 w-full md:w-64 text-center md:text-left">
                 <h3 className="text-xl font-bold mb-4 font-mono tracking-wide">Quick Links</h3>
-                <ul className="space-y-1 text-base font-mono">
+                <ul className="space-y-1 text-xs  font-mono">
                     <li><Link href="/" className="hover:underline">CSEA</Link></li>
                     <li><Link href="/" className="hover:underline">Minerva</Link></li>
                     <li><Link href="/" className="hover:underline">NIT Calicut</Link></li>
